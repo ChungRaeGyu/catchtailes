@@ -1,5 +1,6 @@
 using UnityEngine;
 using BackEnd;
+using BackEnd.Tcp;
 public class BackEndLogin : MonoBehaviour
 {
     private static BackEndLogin _instance;
@@ -37,16 +38,22 @@ public class BackEndLogin : MonoBehaviour
 
         if (bro.IsSuccess())
         {
-            Debug.Log("회원가입에 성공했습니다");
+            Debug.Log("로그인 성공했습니다");
+            ErrorInfo errorInfo;
+            Backend.Match.JoinMatchMakingServer(out errorInfo); //매치 서버 접근
         }
         else
         {
-            Debug.Log("회원가입에 실패했습니다");
+            Debug.Log("로그인 실패했습니다");
         }
     }
 
     public void UpdateNickname(string nickname)
     {
         // Step 4. 닉네임 변경 구현하기 로직
+    }
+    public void Update()
+    {
+        Backend.Match.Poll();
     }
 }
