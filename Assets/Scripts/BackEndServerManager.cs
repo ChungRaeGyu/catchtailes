@@ -3,11 +3,11 @@ using BackEnd;
 using System;
 using TMPro;
 using UnityEngine.UI;
+using BackEnd.Tcp;
 public class BackEndServerManager : MonoBehaviour
 {
     public TMP_InputField ID;
     public TMP_InputField PW;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,6 +33,20 @@ public class BackEndServerManager : MonoBehaviour
 
     public void LoginBtn() 
     {
-        BackEndLogin.Instance.CustomLogin(ID.text, PW.text);
+        Debug.Log("1");
+        if(BackEndLogin.Instance.CustomLogin(ID.text, PW.text))
+        {
+            Debug.Log("2");    
+            BackEndMatchingServer.Instance.JoinMatch();
+        }
+    }
+
+    public void MatchEndBtn()
+    {
+        BackEndMatchingServer.Instance.MatchEnd();
+    }
+    public void Update()
+    {
+        Backend.Match.Poll();
     }
 }
