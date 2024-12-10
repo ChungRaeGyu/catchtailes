@@ -34,6 +34,14 @@ public class BackEndMatchingServer
     public void MatchEnd()
     {
         Backend.Match.LeaveMatchMakingServer();
+        Backend.Match.OnLeaveMatchMakingServer = (LeaveChannelEventArgs args) =>
+        {
+            // TODO 모든 패널 끄고 로그인 창으로
+        };
+    }
+    public void CreateMatchRoom()
+    {
+        Backend.Match.CreateMatchRoom();
     }
 
 }

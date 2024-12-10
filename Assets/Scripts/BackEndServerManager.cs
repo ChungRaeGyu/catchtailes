@@ -33,10 +33,8 @@ public class BackEndServerManager : MonoBehaviour
 
     public void LoginBtn() 
     {
-        Debug.Log("1");
         if(BackEndLogin.Instance.CustomLogin(ID.text, PW.text))
         {
-            Debug.Log("2");    
             BackEndMatchingServer.Instance.JoinMatch();
         }
     }
