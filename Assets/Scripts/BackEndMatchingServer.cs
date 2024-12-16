@@ -1,6 +1,7 @@
 using BackEnd;
 using BackEnd.Tcp;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class BackEndMatchingServer 
@@ -23,13 +24,6 @@ public class BackEndMatchingServer
     {
         ErrorInfo errorInfo;
         Backend.Match.JoinMatchMakingServer(out errorInfo); //매치 서버 접근
-
-        Backend.Match.OnJoinMatchMakingServer = (JoinChannelEventArgs args) =>
-        {
-            //이벤트 사용방법
-
-            // TODO
-        };
     }
     public void MatchEnd()
     {
@@ -42,6 +36,12 @@ public class BackEndMatchingServer
     public void CreateMatchRoom()
     {
         Backend.Match.CreateMatchRoom();
+
+        Backend.Match.OnMatchMakingRoomCreate = (MatchMakingInteractionEventArgs args) =>
+        {
+            SceneManager.LoadScene((int)Scene.WAITINGROOM);   
+            // TODO 캐릭터 생성과 대기실로 이동
+        };
     }
 
 }

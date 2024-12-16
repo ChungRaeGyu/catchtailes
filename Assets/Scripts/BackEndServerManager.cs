@@ -6,8 +6,12 @@ using UnityEngine.UI;
 using BackEnd.Tcp;
 public class BackEndServerManager : MonoBehaviour
 {
-    public TMP_InputField ID;
-    public TMP_InputField PW;
+    [SerializeField] TMP_InputField ID;
+    [SerializeField] TMP_InputField PW;
+    [SerializeField] TMP_InputField nickName;
+    [SerializeField] private GameObject loginPanel;
+    [SerializeField] private GameObject MatchingPanel;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -33,15 +37,47 @@ public class BackEndServerManager : MonoBehaviour
 
     public void LoginBtn() 
     {
+        if (ID.text == null || PW.text == null || nickName.text == null) return;
         if(BackEndLogin.Instance.CustomLogin(ID.text, PW.text))
         {
+            BackEndLogin.Instance.UpdateNickname(nickName.text);
+
             BackEndMatchingServer.Instance.JoinMatch();
+            Backend.Match.OnJoinMatchMakingServer = (JoinChannelEventArgs args) =>
+            {
+                if (args.ErrInfo == ErrorInfo.Success)
+                {
+                    Debug.Log("매치 입장완료");
+                    loginPanel.SetActive(false);
+                    MatchingPanel.SetActive(true);
+                }
+                else
+                {
+                    Debug.Log(args.ErrInfo.Reason);
+                }
+
+                //이벤트 사용방법
+                //로그인 패널 끄고 
+                // TODO
+            };
         }
     }
 
     public void MatchEndBtn()
     {
         BackEndMatchingServer.Instance.MatchEnd();
+    }
+    
+    public void CreateRoomBtn()
+    {
+        BackEndMatchingServer.Instance.CreateMatchRoom();
+    }
+
+    public void OnInviteEvent()
+    {
+        Backend.Match.OnMatchMakingRoomSomeoneInvited += (args) => {
+            // TODO
+        };
     }
     public void Update()
     {
