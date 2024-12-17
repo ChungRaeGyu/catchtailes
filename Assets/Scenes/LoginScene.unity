@@ -1950,7 +1950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: {fileID: 1908228489}
   PW: {fileID: 1045388245}
-  nickName: {fileID: 0}
+  nickName: {fileID: 338558047}
   loginPanel: {fileID: 299825688}
   MatchingPanel: {fileID: 1923764192}
 --- !u!4 &1427140819

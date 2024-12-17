@@ -6,6 +6,21 @@ using UnityEngine.UI;
 using BackEnd.Tcp;
 public class BackEndServerManager : MonoBehaviour
 {
+    private static BackEndServerManager _instance;
+
+    public static BackEndServerManager Instance;
+    private void Awake()
+    {
+        if(_instance == null)
+        {
+            _instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
+    }
     [SerializeField] TMP_InputField ID;
     [SerializeField] TMP_InputField PW;
     [SerializeField] TMP_InputField nickName;
@@ -75,12 +90,16 @@ public class BackEndServerManager : MonoBehaviour
 
     public void OnInviteEvent()
     {
-        Backend.Match.OnMatchMakingRoomSomeoneInvited += (args) => {
-            // TODO
-        };
+
     }
     public void Update()
     {
         Backend.Match.Poll();
+        Backend.Match.OnMatchMakingRoomSomeoneInvited += (args) => {
+            Debug.Log("초대받음");
+            Debug.Log($"{args.RoomId}방 아이디\n{args.RoomToken}방 토큰\n{args.InviteUserInfo}");
+
+            // TODO
+        };
     }
 }

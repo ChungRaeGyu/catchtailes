@@ -1,4 +1,5 @@
 using BackEnd;
+using BackEnd.Tcp;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,11 @@ public class WaitingRoomManager : MonoBehaviour
 
     public void InviteBtn()
     {
+        Debug.Log("초대버튼실행");
         Backend.Match.InviteUser(nickNameInput.text);
+        Backend.Match.OnMatchMakingRoomInvite = (MatchMakingInteractionEventArgs args) => {
+            Debug.Log(args.ErrInfo);
+            // TODO
+        };
     }
-
 }
