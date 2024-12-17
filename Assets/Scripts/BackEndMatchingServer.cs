@@ -28,20 +28,13 @@ public class BackEndMatchingServer
     public void MatchEnd()
     {
         Backend.Match.LeaveMatchMakingServer();
-        Backend.Match.OnLeaveMatchMakingServer = (LeaveChannelEventArgs args) =>
-        {
-            // TODO 모든 패널 끄고 로그인 창으로
-        };
+
     }
     public void CreateMatchRoom()
     {
         Backend.Match.CreateMatchRoom();
 
-        Backend.Match.OnMatchMakingRoomCreate = (MatchMakingInteractionEventArgs args) =>
-        {
-            SceneManager.LoadScene((int)Scene.WAITINGROOM);   
-            // TODO 캐릭터 생성과 대기실로 이동
-        };
+
     }
 
 }
