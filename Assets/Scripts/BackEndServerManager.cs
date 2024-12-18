@@ -3,7 +3,6 @@ using BackEnd;
 using TMPro;
 using BackEnd.Tcp;
 using UnityEngine.SceneManagement;
-using static UnityEngine.Rendering.GPUSort;
 public class BackEndServerManager : MonoBehaviour
 {
     private static BackEndServerManager _instance;
@@ -32,6 +31,7 @@ public class BackEndServerManager : MonoBehaviour
 
     SessionId roomId;
     string roomName;
+    public bool inviteCheck;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -140,8 +140,8 @@ public class BackEndServerManager : MonoBehaviour
         //수락/거절
         Backend.Match.OnMatchMakingRoomInviteResponse = (MatchMakingInteractionEventArgs args) => {
             // TODO
-            Debug.Log(args.ErrInfo);
-            Debug.Log(args.Reason);
+            if(inviteCheck)
+                SceneManager.LoadScene((int)Scene.WAITINGROOM);
             inviteCanvas.SetActive(false);
         };
     }

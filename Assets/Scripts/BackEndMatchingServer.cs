@@ -38,10 +38,12 @@ public class BackEndMatchingServer : MonoBehaviour
     public void AcceptInviteBtn(SessionId roomId, string roomToken)
     {
         Backend.Match.AcceptInvitation(roomId, roomToken);
+        BackEndServerManager.Instance.inviteCheck = true;
     }
     public void DeclineInviteBtn(SessionId roomId, string roomToken)
     {
         Backend.Match.DeclineInvitation(roomId, roomToken);
+        BackEndServerManager.Instance.inviteCheck = false;
 
     }
 
