@@ -1,10 +1,9 @@
 using UnityEngine;
 using BackEnd;
-using System;
 using TMPro;
-using UnityEngine.UI;
 using BackEnd.Tcp;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.GPUSort;
 public class BackEndServerManager : MonoBehaviour
 {
     private static BackEndServerManager _instance;
@@ -22,12 +21,17 @@ public class BackEndServerManager : MonoBehaviour
         }
         DontDestroyOnLoad(gameObject);
     }
+
     [SerializeField] TMP_InputField ID;
     [SerializeField] TMP_InputField PW;
     [SerializeField] TMP_InputField nickName;
-    [SerializeField] private GameObject loginPanel;
-    [SerializeField] private GameObject MatchingPanel;
+    [SerializeField] GameObject loginPanel;
+    [SerializeField] GameObject matchingPanel;
+    [SerializeField] GameObject inviteCanvas;
+    [SerializeField] TMP_Text inviter;
 
+    SessionId roomId;
+    string roomName;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -75,12 +79,14 @@ public class BackEndServerManager : MonoBehaviour
     {
         BackEndMatchingServer.Instance.CreateMatchRoom();
     }
-
-    public void OnInviteEvent()
+    public void InviteAcceptBtn()
     {
-
+        BackEndMatchingServer.Instance.AcceptInviteBtn(roomId, roomName);
     }
-
+    public void InviteDeclineBtn()
+    {
+        BackEndMatchingServer.Instance.DeclineInviteBtn(roomId, roomName);
+    }
     public void Event()
     {
         
@@ -91,7 +97,7 @@ public class BackEndServerManager : MonoBehaviour
             {
                 Debug.Log("매치 입장완료");
                 loginPanel.SetActive(false);
-                MatchingPanel.SetActive(true);
+                matchingPanel.SetActive(true);
             }
             else
             {
@@ -113,12 +119,30 @@ public class BackEndServerManager : MonoBehaviour
         {
             // TODO 모든 패널 끄고 로그인 창으로
         };
+
+        //초대 요청
+        Backend.Match.OnMatchMakingRoomInvite = (MatchMakingInteractionEventArgs args) => {
+            Debug.Log(args.ErrInfo);
+            // TODO
+        };
         //초대받았을때
         Backend.Match.OnMatchMakingRoomSomeoneInvited += (args) => {
             Debug.Log("초대받음");
             Debug.Log($"{args.RoomId}방 아이디\n{args.RoomToken}방 토큰\n{args.InviteUserInfo}");
+            roomId = args.RoomId;
+            roomName = args.RoomToken;
 
+            // TODO 초대 요청에 대한 수락 거절 버튼 보여주기
+            inviteCanvas.SetActive(true);
+            inviter.text = args.InviteUserInfo.m_nickName;
+        };
+
+        //수락/거절
+        Backend.Match.OnMatchMakingRoomInviteResponse = (MatchMakingInteractionEventArgs args) => {
             // TODO
+            Debug.Log(args.ErrInfo);
+            Debug.Log(args.Reason);
+            inviteCanvas.SetActive(false);
         };
     }
     public void Update()

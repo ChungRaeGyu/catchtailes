@@ -12,9 +12,6 @@ public class WaitingRoomManager : MonoBehaviour
     {
         Debug.Log("초대버튼실행");
         Backend.Match.InviteUser(nickNameInput.text);
-        Backend.Match.OnMatchMakingRoomInvite = (MatchMakingInteractionEventArgs args) => {
-            Debug.Log(args.ErrInfo);
-            // TODO
-        };
+
     }
 }

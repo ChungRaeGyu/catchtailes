@@ -1,10 +1,10 @@
 using BackEnd;
 using BackEnd.Tcp;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
-public class BackEndMatchingServer 
+public class BackEndMatchingServer : MonoBehaviour
 {
     private static BackEndMatchingServer _instance = null;
 
@@ -33,8 +33,18 @@ public class BackEndMatchingServer
     public void CreateMatchRoom()
     {
         Backend.Match.CreateMatchRoom();
+    }
 
+    public void AcceptInviteBtn(SessionId roomId, string roomToken)
+    {
+        Backend.Match.AcceptInvitation(roomId, roomToken);
+    }
+    public void DeclineInviteBtn(SessionId roomId, string roomToken)
+    {
+        Backend.Match.DeclineInvitation(roomId, roomToken);
 
     }
+
+
 
 }
